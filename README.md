@@ -69,7 +69,6 @@ for name, model in models.items():
 
 # --- Part 3---
 
-print("\n--- Part 3 Results (Feature Selection) ---")
 part3_results = {}
 
 # Forward Selection (Heuristic Search)
