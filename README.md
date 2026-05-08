@@ -1,16 +1,14 @@
 from ucimlrepo import fetch_ucirepo 
-  
-# fetch dataset 
 letter_recognition = fetch_ucirepo(id=59) 
   
-# data (as pandas dataframes) 
+#data (as pandas dataframes) 
 X = letter_recognition.data.features 
 y = letter_recognition.data.targets 
   
-# metadata 
+#metadata 
 print(letter_recognition.metadata) 
   
-# variable information 
+#variable information 
 print(letter_recognition.variables) 
 
 # --- Part 1 ---
@@ -19,7 +17,7 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 
-# Fixed seed for reproducibility
+#Fixed seed for reproducibility
 randseed = 17342
 np.random.seed(randseed)
 
@@ -28,14 +26,14 @@ letter_recognition = fetch_ucirepo(id=59)
 X = letter_recognition.data.features 
 y = letter_recognition.data.targets.values.ravel()
 
-# 1-2. Preprocessing
+#1-2. Preprocessing
 X = X.dropna() 
 
-# Encode the target
+#Encode the target
 le = LabelEncoder()
 y = le.fit_transform(y)
 
-# Scale numerical features
+#Scale numerical features
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 feature_names = X.columns.tolist()
@@ -71,7 +69,7 @@ for name, model in models.items():
 
 part3_results = {}
 
-# Forward Selection (Heuristic Search)
+#Forward Selection (Heuristic Search)
 for name, model in models.items():
     sfs = SequentialFeatureSelector(
         model, 
@@ -83,19 +81,19 @@ for name, model in models.items():
     )
     sfs.fit(X_scaled, y)
     
-    # Identify selected features
-    selected_indices = sfs.get_support()
-    X_subset = X_scaled[:, selected_indices]
-    selected_features = np.array(feature_names)[selected_indices]
+  #Identify selected features
+  selected_indices = sfs.get_support()
+  X_subset = X_scaled[:, selected_indices]
+  selected_features = np.array(feature_names)[selected_indices]
     
-    scores = cross_val_score(model, X_subset, y, cv=rkf, scoring='accuracy', n_jobs=-1)
+  scores = cross_val_score(model, X_subset, y, cv=rkf, scoring='accuracy', n_jobs=-1)
     
-    part3_results[name] = {
+  part3_results[name] = {
         'subset': list(selected_features),
         'mean': scores.mean(),
         'std': scores.std()
     }
     
-    print(f"Algorithm: {name}")
-    print(f"Best Subset: {list(selected_features)}")
-    print(f"Mean Accuracy: {scores.mean():.4f}, Std: {scores.std():.4f}\n")
+  print(f"Algorithm: {name}")
+  print(f"Best Subset: {list(selected_features)}")
+  print(f"Mean Accuracy: {scores.mean():.4f}, Std: {scores.std():.4f}\n")
