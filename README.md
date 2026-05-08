@@ -99,15 +99,3 @@ for name, model in models.items():
     print(f"Algorithm: {name}")
     print(f"Best Subset: {list(selected_features)}")
     print(f"Mean Accuracy: {scores.mean():.4f}, Std: {scores.std():.4f}\n")
-
-
-# --- Report ---
-
-print("\nSummary Table for README:")
-print("| Algorithm | Part 2 Mean (All) | Part 3 Mean (Subset) | Performance Change |")
-print("|-----------|-------------------|----------------------|--------------------|")
-for name in models.keys():
-    p2_m = part2_results[name][0]
-    p3_m = part3_results[name]['mean']
-    diff = p3_m - p2_m
-    print(f"| {name} | {p2_m:.4f} | {p3_m:.4f} | {diff:+.4f} |")
